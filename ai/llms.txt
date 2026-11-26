@@ -1,0 +1,7 @@
+# @heliony/ui 0.1.0
+
+> Design system Heliony pour les applications web SvelteKit (Svelte 5, Tailwind v4, Bits UI). Dark et Light.
+
+- [Règles et architecture](HELIONY.md)
+- [Composants](components.md)
+- [Tokens](tokens.md)

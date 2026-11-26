@@ -1,0 +1,156 @@
+/* Heliony UI — thème Tailwind v4, généré depuis tokens/tokens.json (v5).
+   Usage : @import "tailwindcss"; @import "@heliony/ui/theme.css"; @source "../node_modules/@heliony/ui/dist"; */
+@theme inline {
+  --color-*: initial;
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-base: var(--surface-base);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-surface-control: var(--surface-control);
+  --color-surface-control-hover: var(--surface-control-hover);
+  --color-surface-control-active: var(--surface-control-active);
+  --color-surface-nav: var(--surface-nav);
+  --color-fg-primary: var(--fg-primary);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-tertiary: var(--fg-tertiary);
+  --color-fg-disabled: var(--fg-disabled);
+  --color-fg-inverse: var(--fg-inverse);
+  --color-line-subtle: var(--line-subtle);
+  --color-line-default: var(--line-default);
+  --color-line-strong: var(--line-strong);
+  --color-line-control: var(--line-control);
+  --color-action-primary: var(--action-primary);
+  --color-action-primary-hover: var(--action-primary-hover);
+  --color-action-primary-active: var(--action-primary-active);
+  --color-action-primary-fg: var(--action-primary-fg);
+  --color-accent: var(--accent);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-accent-fg: var(--accent-fg);
+  --color-focus-ring: var(--focus-ring);
+  --color-selection: var(--selection);
+  --color-scrim: var(--scrim);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-fg: var(--success-fg);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-fg: var(--warning-fg);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-danger-fg: var(--danger-fg);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-info-fg: var(--info-fg);
+  --color-severity-debug: var(--severity-debug);
+  --color-severity-info: var(--severity-info);
+  --color-severity-warn: var(--severity-warn);
+  --color-severity-error: var(--severity-error);
+  --color-severity-fatal: var(--severity-fatal);
+  --color-intelligence: var(--intelligence);
+  --color-intelligence-subtle: var(--intelligence-subtle);
+  --color-intelligence-fg: var(--intelligence-fg);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-axis: var(--chart-axis);
+  --color-syntax-comment: var(--syntax-comment);
+  --color-syntax-string: var(--syntax-string);
+  --color-syntax-number: var(--syntax-number);
+  --color-syntax-keyword: var(--syntax-keyword);
+  --color-syntax-name: var(--syntax-name);
+  --color-syntax-attr: var(--syntax-attr);
+  --color-syntax-punct: var(--syntax-punct);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --radius-*: initial;
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+  --shadow-*: initial;
+  --shadow-raised: var(--shadow-raised);
+  --shadow-overlay: var(--shadow-overlay);
+  --shadow-modal: var(--shadow-modal);
+  --ease-*: initial;
+  --ease-standard: var(--ease-standard);
+  --ease-enter: var(--ease-enter);
+  --ease-exit: var(--ease-exit);
+  --text-*: initial;
+  --text-display: var(--fs-display);
+  --text-display--line-height: var(--lh-display);
+  --text-display--font-weight: var(--fw-display);
+  --text-display--letter-spacing: var(--ls-display);
+  --text-title: var(--fs-title);
+  --text-title--line-height: var(--lh-title);
+  --text-title--font-weight: var(--fw-title);
+  --text-title--letter-spacing: var(--ls-title);
+  --text-heading: var(--fs-heading);
+  --text-heading--line-height: var(--lh-heading);
+  --text-heading--font-weight: var(--fw-heading);
+  --text-heading--letter-spacing: var(--ls-heading);
+  --text-subheading: var(--fs-subheading);
+  --text-subheading--line-height: var(--lh-subheading);
+  --text-subheading--font-weight: var(--fw-subheading);
+  --text-subheading--letter-spacing: var(--ls-subheading);
+  --text-lead: var(--fs-lead);
+  --text-lead--line-height: var(--lh-lead);
+  --text-lead--font-weight: var(--fw-lead);
+  --text-lead--letter-spacing: var(--ls-lead);
+  --text-body: var(--fs-body);
+  --text-body--line-height: var(--lh-body);
+  --text-body--font-weight: var(--fw-body);
+  --text-body--letter-spacing: var(--ls-body);
+  --text-body-strong: var(--fs-body-strong);
+  --text-body-strong--line-height: var(--lh-body-strong);
+  --text-body-strong--font-weight: var(--fw-body-strong);
+  --text-body-strong--letter-spacing: var(--ls-body-strong);
+  --text-label: var(--fs-label);
+  --text-label--line-height: var(--lh-label);
+  --text-label--font-weight: var(--fw-label);
+  --text-label--letter-spacing: var(--ls-label);
+  --text-caption: var(--fs-caption);
+  --text-caption--line-height: var(--lh-caption);
+  --text-caption--font-weight: var(--fw-caption);
+  --text-caption--letter-spacing: var(--ls-caption);
+  --text-code: var(--fs-code);
+  --text-code--line-height: var(--lh-code);
+  --text-code--font-weight: var(--fw-code);
+  --text-code--letter-spacing: var(--ls-code);
+  --text-figure: var(--fs-figure);
+  --text-figure--line-height: var(--lh-figure);
+  --text-figure--font-weight: var(--fw-figure);
+  --text-figure--letter-spacing: var(--ls-figure);
+  --text-figure-lg: var(--fs-figure-lg);
+  --text-figure-lg--line-height: var(--lh-figure-lg);
+  --text-figure-lg--font-weight: var(--fw-figure-lg);
+  --text-figure-lg--letter-spacing: var(--ls-figure-lg);
+  --spacing-control-sm: var(--control-sm);
+  --spacing-control-md: var(--control-md);
+  --spacing-control-lg: var(--control-lg);
+  --spacing-control-xl: var(--control-xl);
+  --spacing-icon-sm: var(--icon-sm);
+  --spacing-icon-md: var(--icon-md);
+  --spacing-icon-lg: var(--icon-lg);
+  --spacing-row-compact: var(--row-compact);
+  --spacing-row-default: var(--row-default);
+  --spacing-row-comfortable: var(--row-comfortable);
+  --spacing-sidebar: var(--sidebar-width);
+  --spacing-sidebar-collapsed: var(--sidebar-width-collapsed);
+}
+@utility duration-fast { transition-duration: var(--duration-fast); animation-duration: var(--duration-fast); }
+@utility duration-base { transition-duration: var(--duration-base); animation-duration: var(--duration-base); }
+@utility duration-slow { transition-duration: var(--duration-slow); animation-duration: var(--duration-slow); }
+@utility z-sticky { z-index: var(--z-sticky); }
+@utility z-nav { z-index: var(--z-nav); }
+@utility z-overlay { z-index: var(--z-overlay); }
+@utility z-modal { z-index: var(--z-modal); }
+@utility z-toast { z-index: var(--z-toast); }
+@utility z-tooltip { z-index: var(--z-tooltip); }
+@utility ring-focus { outline: var(--border-focus) solid var(--focus-ring); outline-offset: 2px; }
+@utility tabular { font-variant-numeric: tabular-nums; }

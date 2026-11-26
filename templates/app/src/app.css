@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+@import '@heliony/ui/styles.css';
+@import '@heliony/ui/theme.css';
+@source '../node_modules/@heliony/ui/dist';
