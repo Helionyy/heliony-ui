@@ -16,7 +16,7 @@ async function loadCatalog() {
   return await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
 }
 
-const esc = (s) => String(s).replace(/\|/g, '\\|');
+const esc = (s) => String(s).replace(/\\/g, '\\\\').replace(/\|/g, '\\|');
 const repriseLabel = { adapted: 'repris de shadcn-svelte et habillé', recoded: 'recodé pour Heliony', original: 'maison' };
 let md = `# Composants @heliony/ui ${pkg.version}\n\n> Généré depuis catalog/catalog.ts. Import : \`import { Nom } from '@heliony/ui'\`. Styles : \`@import '@heliony/ui/styles.css'\` et \`@import '@heliony/ui/theme.css'\` une fois dans le CSS racine, après \`@import 'tailwindcss'\`. Racine : \`<HelionyProvider>\`.\n\n`;
 md += `| Composant | Groupe | Rôle | Origine |\n|---|---|---|---|\n` + components.map((c) => `| [\`${c.name}\`](#${c.name.toLowerCase()}) | ${groups.find((g) => g.id === c.group).label} | ${esc(c.summary)} | ${repriseLabel[c.reprise]} |`).join('\n') + '\n';

@@ -10,8 +10,9 @@ const flags = new Set(rest.filter((a) => a.startsWith('--')));
 const args = rest.filter((a) => !a.startsWith('--'));
 const C = { red: (s) => `\x1b[31m${s}\x1b[0m`, yellow: (s) => `\x1b[33m${s}\x1b[0m`, green: (s) => `\x1b[32m${s}\x1b[0m`, dim: (s) => `\x1b[2m${s}\x1b[0m` };
 
-const componentsFile = join(PKG_ROOT, 'ai', 'components.json');
-export const LIB_COMPONENTS = existsSync(componentsFile) ? JSON.parse(readFileSync(componentsFile, 'utf8')) : [];
+const readIfExists = (file) => { try { return readFileSync(file, 'utf8'); } catch (e) { if (e && e.code === 'ENOENT') return null; throw e; } };
+const componentsJson = readIfExists(join(PKG_ROOT, 'ai', 'components.json'));
+export const LIB_COMPONENTS = componentsJson ? JSON.parse(componentsJson) : [];
 
 const SHADCN_CLASSES = /\b(?:bg|text|border|ring|fill|stroke|from|to|via|outline|divide|placeholder|decoration|shadow)-(?:background|foreground|card(?:-foreground)?|popover(?:-foreground)?|primary(?:-foreground)?|secondary(?:-foreground)?|muted(?:-foreground)?|accent-foreground|destructive(?:-foreground)?|input|ring|sidebar(?:-[a-z-]+)?|chart-[1-5]\b|border\b)\b/;
 
@@ -98,13 +99,13 @@ Cette application utilise le design system officiel Heliony. Avant de créer ou 
   return `${BEGIN}\n<!-- Généré par « bunx heliony ai sync » (@heliony/ui ${v}). Ne pas modifier entre les marqueurs. -->\n${kind === 'claude' ? claude : common}${END}`;
 }
 function upsert(file, content, header) {
-  const cur = existsSync(file) ? readFileSync(file, 'utf8') : `${header}\n\n`;
+  const cur = readIfExists(file) ?? `${header}\n\n`;
   const next = cur.includes(BEGIN) ? cur.replace(new RegExp(`${BEGIN}[\\s\\S]*?${END}`), content) : `${cur.trimEnd()}\n\n${content}\n`;
   writeFileSync(file, next);
 }
 function ensureIgnored(dir, entries) {
   const file = join(dir, '.gitignore');
-  const cur = existsSync(file) ? readFileSync(file, 'utf8') : '';
+  const cur = readIfExists(file) ?? '';
   const lines = cur.split('\n').map((l) => l.trim());
   const missing = entries.filter((e) => !lines.includes(e));
   if (missing.length) writeFileSync(file, `${cur.trimEnd()}${cur.trim() ? '\n' : ''}${missing.join('\n')}\n`);
@@ -114,7 +115,7 @@ function cmdAi(sub) {
   const dir = resolve(args[1] ?? '.');
   const files = { claude: join(dir, 'CLAUDE.md'), agents: join(dir, 'AGENTS.md') };
   if (sub === 'check') {
-    const bad = Object.entries(files).filter(([, f]) => !existsSync(f) || !readFileSync(f, 'utf8').includes(`@heliony/ui ${PKG.version})`));
+    const bad = Object.entries(files).filter(([, f]) => !(readIfExists(f) ?? '').includes(`@heliony/ui ${PKG.version})`));
     for (const [, f] of bad) console.log(C.red(`✗ ${relative(process.cwd(), f)} absent ou pas à jour (attendu @heliony/ui ${PKG.version}) — lancer « bunx heliony ai sync »`));
     if (!bad.length) console.log(C.green(`✓ instructions IA à jour (@heliony/ui ${PKG.version})`));
     process.exit(bad.length ? 1 : 0);
@@ -125,7 +126,7 @@ function cmdAi(sub) {
   mkdirSync(skillDir, { recursive: true });
   writeFileSync(join(skillDir, 'SKILL.md'), readFileSync(join(PKG_ROOT, 'ai', 'skill', 'SKILL.md'), 'utf8'));
   const settingsPath = join(dir, '.claude', 'settings.json');
-  const settings = existsSync(settingsPath) ? JSON.parse(readFileSync(settingsPath, 'utf8')) : {};
+  const settings = JSON.parse(readIfExists(settingsPath) ?? '{}');
   settings.hooks ??= {};
   settings.hooks.PostToolUse ??= [];
   const hookCmd = 'node "$CLAUDE_PROJECT_DIR/node_modules/@heliony/ui/bin/heliony-hook.mjs"';
@@ -148,10 +149,8 @@ function cmdInit() {
     console.log(C.green(`✓ ${f}`));
   }
   const html = join(target, 'src', 'app.html');
-  if (existsSync(html)) {
-    const cur = readFileSync(html, 'utf8');
-    if (!/<html[^>]*class=/.test(cur)) { writeFileSync(html, cur.replace(/<html([^>]*)>/, '<html$1 class="dark">')); console.log(C.green('✓ src/app.html : classe dark sur <html>')); }
-  }
+  const cur = readIfExists(html);
+  if (cur !== null && !/<html[^>]*class=/.test(cur)) { writeFileSync(html, cur.replace(/<html([^>]*)>/, '<html$1 class="dark">')); console.log(C.green('✓ src/app.html : classe dark sur <html>')); }
   console.log(`  Ensuite : bun add "git+https://github.com/Helionyy/heliony-ui.git#v${PKG.version}" && bunx heliony ai sync .`);
 }
 

@@ -46,7 +46,6 @@ if (errors.length) { console.error(errors.join('\n')); process.exit(1); }
 const cssVal = (v) => (alias(v) ? `var(--${alias(v)})` : v);
 const themeValue = (t, id) => (typeof t.value === 'string' ? t.value : t[id]);
 const themed = (id) => [...semantic, ...families.flatMap(([, f]) => f.tokens.filter((t) => !t.value))].map((t) => `  --${t.name}: ${cssVal(themeValue(t, id))};`).join('\n');
-const defaultTheme = themes.find((t) => t.default) ?? themes[0];
 
 let css = `/* Heliony UI — généré depuis tokens/tokens.json (v${src.version}). Éditer la source puis bun run tokens. */\n`;
 css += `:root {\n${primitives.map((t) => `  --${t.name}: ${t.value};`).join('\n')}\n`;
@@ -92,7 +91,7 @@ export const cssVar = (name: ColorToken | (string & {})) => \`var(--\${name})\`;
 out('src/lib/tokens.ts', ts);
 out('src/lib/version.ts', `export const version = '${pkg.version}';\n`);
 
-const esc = (s) => s.replace(/\|/g, '\\|');
+const esc = (s) => s.replace(/\\/g, '\\\\').replace(/\|/g, '\\|');
 let md = `# Tokens Heliony UI (v${src.version})\n\n> Généré depuis tokens/tokens.json. ${src.meta.note}\n\n`;
 md += `Utiliser en CSS : \`var(--nom)\`. En Tailwind : \`bg-surface-raised\`, \`text-fg-secondary\`, \`border-line-subtle\`, \`bg-action-primary\`, \`text-success-fg\`, \`rounded-md\`, \`shadow-overlay\`, \`text-body\`, \`text-label\`. Espacements : échelle Tailwind par défaut (\`p-4\` = 1 rem). Thèmes : \`${themes.map((t) => `${t.id} (${t.selector})`).join(', ')}\`.\n\n`;
 md += `## Couleurs sémantiques\n\n| Token | ${themeIds.map((id) => id[0].toUpperCase() + id.slice(1)).join(' | ')} | Usage |\n|---|${themeIds.map(() => '---').join('|')}|---|\n`;
