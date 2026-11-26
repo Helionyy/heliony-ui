@@ -1,0 +1,9 @@
+node_modules
+dist
+docs/dist
+.svelte-kit
+*.log
+*.tgz
+.claude
+CLAUDE.md
+AGENTS.md

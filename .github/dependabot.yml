@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+      timezone: Europe/Paris
+    open-pull-requests-limit: 5
+    groups:
+      svelte:
+        patterns: ["svelte", "@sveltejs/*", "svelte-check"]
+      tooling:
+        patterns: ["vite", "vitest", "typescript", "tailwindcss", "@tailwindcss/*", "@types/*", "culori", "@types/culori"]
+      runtime:
+        patterns: ["bits-ui", "@lucide/svelte", "mode-watcher", "tailwind-variants", "tailwind-merge", "clsx", "@internationalized/date", "@tanstack/*"]
+    commit-message:
+      prefix: "deps"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+      timezone: Europe/Paris
+    commit-message:
+      prefix: "ci"

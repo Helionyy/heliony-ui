@@ -1,0 +1,50 @@
+name: release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version à publier (doit être celle de package.json sur main, ex. 0.2.0)'
+        required: true
+permissions:
+  contents: read
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    environment: release
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: { ref: main, fetch-depth: 0 }
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with: { bun-version: 1.3.13 }
+      - name: Vérifier version et CHANGELOG
+        env: { VERSION: '${{ inputs.version }}' }
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Version semver attendue, reçu « $VERSION »"; exit 1; }
+          current=$(node -p "require('./package.json').version")
+          [ "$current" = "$VERSION" ] || { echo "package.json est en $current : bumper la version par une PR avant de publier $VERSION"; exit 1; }
+          grep -q "^## $VERSION" CHANGELOG.md || { echo "Ajouter la section ## $VERSION au CHANGELOG"; exit 1; }
+          git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null && { echo "Le tag v$VERSION existe déjà"; exit 1; } || true
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun run verify
+      - name: Créer le tag avec dist
+        env: { VERSION: '${{ inputs.version }}' }
+        run: |
+          set -euo pipefail
+          git config user.name "heliony-release"
+          git config user.email "release@heliony.local"
+          git checkout -b release-tmp
+          node -e "const f='package.json',p=require('./'+f);delete p.scripts.prepare;require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
+          git add -f dist package.json
+          git commit -m "build: v$VERSION (dist, sans prepare)"
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+      - uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3
+        with:
+          tag_name: 'v${{ inputs.version }}'
+          body_path: CHANGELOG.md
+          generate_release_notes: false
